@@ -1,0 +1,51 @@
+body {
+    margin: 0;  
+}
+
+.header-content{
+    display: flex;
+    justify-content: center;
+    border: 1px solid;
+    margin-bottom: 100px;
+}
+
+.box {
+    border: 1px solid;
+    min-width: 80%;
+    min-height: 500px;
+    position: relative;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#circle{
+    width: 100px;
+}
+
+#rect{
+    width: 200px;
+    color: #00a8ff;
+}
+
+#right-triangle {
+    width: 150px
+}
+
+#equ-triangle {
+    width: 150px
+}
+
+#square{
+    width:150px
+}
+
+
+
