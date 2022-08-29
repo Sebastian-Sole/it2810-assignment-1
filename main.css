@@ -26,13 +26,16 @@ body {
     flex-wrap: wrap;
 }
 
-#circle{
-    width: 100px;
+
+#svg-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 #rect{
     width: 200px;
-    color: #00a8ff;
 }
 
 #right-triangle {
@@ -47,5 +50,12 @@ body {
     width:150px
 }
 
+svg{
+    width: 100%;
+}
 
+
+@keyframes move {
+    
+}
 
