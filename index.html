@@ -65,15 +65,64 @@
       </div>
 
       <div class="box">
-        <canvas id="canvas" viewBox="0 0 1000 500"> </canvas>
+        <canvas id="canvas" width="10000px" height="5000px"> </canvas>
       </div>
     </div>
 
     <script>
       var c = document.getElementById("canvas");
       var ctx = c.getContext("2d");
+
+      // Big rectangle
       ctx.beginPath();
-      ctx.arc(150, 75, 40, 0, 2 * Math.PI);
+      ctx.moveTo(3000, 1350);
+      ctx.lineWidth = 10;
+      ctx.rect(3000, 1350, 4000, 2250);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Big Circle
+      ctx.beginPath();
+      ctx.moveTo(6000, 2500);
+      ctx.arc(5000, 2500, 1000, 0, 2 * Math.PI);
+      ctx.fillStyle = "#42C2FFC5";
+      ctx.fill();
+      ctx.closePath();
+
+      ctx.stroke();
+
+      // Triangle
+      ctx.beginPath();
+      var region = new Path2D();
+      region.moveTo(4100, 2900);
+      region.lineTo(5000, 1550);
+      region.lineTo(5900, 2900);
+      region.lineTo(4100, 2900);
+
+      region.closePath();
+
+      ctx.stroke(region);
+      ctx.fillStyle = "#85F4FF";
+      ctx.fill(region);
+
+      // Square
+      ctx.beginPath();
+      ctx.moveTo(4625, 2900);
+      ctx.lineTo(5375, 2900);
+      ctx.lineTo(5375, 2100);
+      ctx.lineTo(4625, 2100);
+      ctx.lineTo(4625, 2900);
+      ctx.fillStyle = "#b8fff9";
+      ctx.fill();
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(5000, 2500, 225, 0, 2 * Math.PI);
+      ctx.fillStyle = "#EFFFFD";
+      ctx.fill();
+      ctx.closePath();
+      ctx.stroke();
       ctx.stroke();
     </script>
   </body>
