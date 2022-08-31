@@ -7,7 +7,7 @@
     <title>Art project</title>
     <link rel="stylesheet" href="main.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="main.js"></script>
+    <script src="svg.js"></script>
   </head>
   <body>
     <div class="header-content">
@@ -68,62 +68,6 @@
         <canvas id="canvas" width="10000px" height="5000px"> </canvas>
       </div>
     </div>
-
-    <script>
-      var c = document.getElementById("canvas");
-      var ctx = c.getContext("2d");
-
-      // Big rectangle
-      ctx.beginPath();
-      ctx.moveTo(3000, 1350);
-      ctx.lineWidth = 10;
-      ctx.rect(3000, 1350, 4000, 2250);
-      ctx.closePath();
-      ctx.stroke();
-
-      // Big Circle
-      ctx.beginPath();
-      ctx.moveTo(6000, 2500);
-      ctx.arc(5000, 2500, 1000, 0, 2 * Math.PI);
-      ctx.fillStyle = "#42C2FFC5";
-      ctx.fill();
-      ctx.closePath();
-
-      ctx.stroke();
-
-      // Triangle
-      ctx.beginPath();
-      var region = new Path2D();
-      region.moveTo(4100, 2900);
-      region.lineTo(5000, 1550);
-      region.lineTo(5900, 2900);
-      region.lineTo(4100, 2900);
-
-      region.closePath();
-
-      ctx.stroke(region);
-      ctx.fillStyle = "#85F4FF";
-      ctx.fill(region);
-
-      // Square
-      ctx.beginPath();
-      ctx.moveTo(4625, 2900);
-      ctx.lineTo(5375, 2900);
-      ctx.lineTo(5375, 2100);
-      ctx.lineTo(4625, 2100);
-      ctx.lineTo(4625, 2900);
-      ctx.fillStyle = "#b8fff9";
-      ctx.fill();
-      ctx.closePath();
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(5000, 2500, 225, 0, 2 * Math.PI);
-      ctx.fillStyle = "#EFFFFD";
-      ctx.fill();
-      ctx.closePath();
-      ctx.stroke();
-      ctx.stroke();
-    </script>
+    <script src="canvas.js"></script>
   </body>
 </html>
