@@ -2,24 +2,40 @@ var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 
 class Circle {
-  constructor(x, y, radius, fillColor) {
+  constructor(x, y, radius, fillColor, opacity) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.fillColor = fillColor;
+    this.opacity = opacity;
   }
-  getRadius() {
+  get getOpacity() {
+    return this.opacity;
+  }
+  get getRadius() {
     return this.radius;
   }
 
   incrementRadius() {
-    this.radius += 1;
+    this.radius += 10;
+  }
+
+  extractColor() {
+    return "rgba(" + this.fillColor + ", " + this.opacity + ")";
+  }
+
+  decreaseOpacity() {
+    if (this.opacity - 0.025 < 0) {
+      this.opacity = 0;
+    } else {
+      this.opacity -= 0.025;
+    }
   }
 
   drawCircle(ctx) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    ctx.fillStyle = this.fillColor;
+    ctx.fillStyle = this.extractColor();
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
@@ -27,43 +43,73 @@ class Circle {
 
   animate(ctx) {
     var startRadius;
-    for (let i = startRadius; i < 5000; i++) {
+    for (let i = startRadius; i < 500; i++) {
       ctx.clearArc(ctx, this.x, this.y);
       this.radius += 1;
       drawCircle(ctx);
     }
   }
-
-  clearArc() {
-    ctx.save();
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.begin;
-  }
 }
 
 class Box {
-  constructor(x, y, width, height, fillColor) {
+  constructor(x, y, width, height, fillColor, opacity) {
     this.x = x;
     this.y = y;
     this.height = height;
     this.width = width;
     this.fillColor = fillColor;
+    this.opacity = opacity;
+  }
+
+  get getHeight() {
+    return this.height;
+  }
+
+  get getWidth() {
+    return this.width;
+  }
+
+  get getOpacity() {
+    return this.opacity;
+  }
+
+  decreaseWidth() {
+    this.width -= 1.5;
+    this.x = canvas.width / 2 - this.width / 2;
+  }
+
+  decreaseHeight() {
+    this.height -= 1.5;
+    this.y = canvas.height / 2 - this.height / 2;
+  }
+
+  decreaseOpacity() {
+    if (this.opacity - 0.025 < 0) {
+      this.opacity = 0;
+    } else {
+      this.opacity -= 0.025;
+    }
   }
 
   drawBox(ctx) {
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = this.fillColor;
+    ctx.fillStyle = this.extractColor();
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
   }
+
+  extractColor() {
+    return "rgba(" + this.fillColor + ", " + this.opacity + ")";
+  }
 }
 
 class Triangle {
-  constructor(points, fillColor) {
+  constructor(points, fillColor, opacity) {
     this.points = points;
     this.fillColor = fillColor;
+    this.opacity = opacity;
   }
 
   drawTriangle(ctx) {
@@ -74,65 +120,87 @@ class Triangle {
     region.lineTo(this.points[2][0], this.points[2][1]);
     region.closePath();
     ctx.stroke(region);
-    ctx.fillStyle = this.fillColor;
+    ctx.fillStyle = this.extractColor();
     ctx.fill(region);
+  }
+
+  extractColor() {
+    return "rgba(" + this.fillColor + ", " + this.opacity + ")";
   }
 }
 
 // Draw on the Canvas
 
-ctx.lineWidth = 10;
-ctx.moveTo(3000, 1350);
-var frame = new Box(3000, 1350, 4000, 2250, "white");
+ctx.lineWidth = 1;
+var frame = new Box(
+  canvas.width / 2 - 400 / 2,
+  canvas.height / 2 - 225 / 2,
+  400,
+  225,
+  "255, 255, 255",
+  1
+);
 frame.drawBox(ctx);
-ctx.moveTo(6000, 2500);
-var bigCircle = new Circle(5000, 2500, 1000, "#42C2FFC5");
+ctx.moveTo(600, 250);
+var bigCircle = new Circle(500, 250, 100, "66, 194, 255", 0.77);
 bigCircle.drawCircle(ctx);
-ctx.moveTo(4100, 2900);
+ctx.moveTo(410, 290);
 var trianglePoints = [
-  [5000, 1550],
-  [5900, 2900],
-  [4100, 2900],
+  [500, 155],
+  [590, 290],
+  [410, 290],
 ];
-var triangle = new Triangle(trianglePoints, "#85F4FFFF");
+var triangle = new Triangle(trianglePoints, "133, 244, 255", 1);
 triangle.drawTriangle(ctx);
-ctx.moveTo(4625, 2900);
-var square = new Box(4625, 2100, 750, 800, "#b8fff9");
+ctx.moveTo(462.5, 290);
+var square = new Box(462.5, 210, 75, 80, "184, 255, 249", 1);
 square.drawBox(ctx);
-ctx.moveTo(3000, 1350);
-var smallCircle = new Circle(5000, 2500, 225, "#EFFFFD");
+ctx.moveTo(300, 135);
+var smallCircle = new Circle(500, 250, 22.5, "239, 255, 253", 1);
 smallCircle.drawCircle(ctx);
 
-c.onclick = function () {
+c.onclick = () => {
   console.log("Click");
-  // smallCircle.animate();
-  // bigCircle.animate();
-  // triangle.animate();
-  // frame.animate();
-  // square.animate();
-  animateCanvas(ctx, smallCircle);
+  animateCanvas(ctx);
 };
 
-function animateCanvas(ctx, smallCircle) {
+function animateCanvas() {
+  var c = document.getElementById("canvas");
+  var ctx = c.getContext("2d");
   // Small Circle
   console.log(smallCircle);
-  var smallCircleStartRadius = smallCircle.getRadius();
-  for (let i = smallCircleStartRadius; i < 5000; i++) {
-    if (smallCircle.getRadius() == 4500) {
-      return;
-    } else {
-      ctx.clearRect(0, 0, ctx.width, ctx.height);
-      smallCircle.incrementRadius();
-      smallCircle.drawCircle(ctx);
-    }
-    if (bigCircle.getRadius() == 5000) {
-      return;
-    } else {
-      ctx.clearRect(0, 0, ctx.width, ctx.height);
-      bigCircle.incrementRadius();
-      bigCircle.drawCircle(ctx);
-    }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (smallCircle.getRadius <= 425) {
+    smallCircle.incrementRadius();
   }
+  if (smallCircle.getOpacity >= 0) {
+    smallCircle.decreaseOpacity();
+  }
+
+  // Big Circle
+  if (bigCircle.getRadius <= 475) {
+    bigCircle.incrementRadius();
+  }
+  if (bigCircle.getOpacity >= 0) {
+    bigCircle.decreaseOpacity();
+  }
+  // Triangle
+
+  // Square
+  if (square.getHeight >= 13) {
+    square.decreaseHeight();
+  }
+  if (square.getWidth >= 13) {
+    square.decreaseWidth();
+  }
+  if (square.getOpacity >= 0) {
+    square.decreaseOpacity();
+  }
+
+  smallCircle.drawCircle(ctx);
+  bigCircle.drawCircle(ctx);
+  console.log(square.getOpacity);
+  square.drawBox(ctx);
   requestAnimationFrame(animateCanvas);
 
   // Big Circle
