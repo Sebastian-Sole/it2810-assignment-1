@@ -1,5 +1,8 @@
-var c = document.getElementById("canvas");
-var ctx = c.getContext("2d");
+var mainCanvas = document.getElementById("main-canvas");
+var ctx = mainCanvas.getContext("2d");
+
+let triangleCanvas = document.getElementById("triangle-canvas");
+let triangleCtx = mainCanvas.getContext("2d");
 
 class Circle {
   constructor(x, y, radius, fillColor, opacity) {
@@ -52,13 +55,14 @@ class Circle {
 }
 
 class Box {
-  constructor(x, y, width, height, fillColor, opacity) {
+  constructor(x, y, width, height, fillColor, opacity, canvas) {
     this.x = x;
     this.y = y;
     this.height = height;
     this.width = width;
     this.fillColor = fillColor;
     this.opacity = opacity;
+    this.canvas = canvas;
   }
 
   get getHeight() {
@@ -75,12 +79,12 @@ class Box {
 
   decreaseWidth() {
     this.width -= 1.5;
-    this.x = canvas.width / 2 - this.width / 2;
+    this.x = this.canvas.width / 2 - this.width / 2;
   }
 
   decreaseHeight() {
     this.height -= 1.5;
-    this.y = canvas.height / 2 - this.height / 2;
+    this.y = this.canvas.height / 2 - this.height / 2;
   }
 
   decreaseOpacity() {
@@ -133,54 +137,28 @@ class Triangle {
     var y = (this.points[0][1] + this.points[1][1] + this.points[2][1]) / 3;
     return [x, y];
   };
+
+  decreaseOpacity() {
+    if (this.opacity - 0.025 < 0) {
+      this.opacity = 0;
+    } else {
+      this.opacity -= 0.025;
+    }
+  }
 }
 
 // Draw on the Canvas
 
 const rotateTriangleAnimation = (triangle) => {
-  console.log(triangle.getTriangleCentroid());
-  ctx.clearRect(0, 0, 1280, 720);
   var radians = (angle * Math.PI) / 180;
-  var centerX = triangle.getTriangleCentroid()[0];
-  var centerY = triangle.getTriangleCentroid()[1];
-  ctx.translate(centerX, centerY);
-  ctx.rotate(radians);
-  // triangle.drawTriangle(ctx);
-  ctx.beginPath();
-  ctx.moveTo(size * Math.cos(0), size * Math.sin(0));
-  for (var i = 1; i <= sideCount; i += 1) {
-    ctx.lineTo(
-      size * Math.cos((i * 2 * Math.PI) / sideCount),
-      size * Math.sin((i * 2 * Math.PI) / sideCount)
-    );
-  }
-  ctx.closePath();
-  ctx.fillStyle = fillColor;
-  ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = strokeWidth;
-  ctx.stroke();
-  ctx.fill();
-  ctx.rotate(-radians);
-  ctx.translate(-centerX, -centerY);
+  triangleCtx.translate(triangleCanvas.width / 2, triangleCanvas.height / 2);
+  triangleCtx.rotate(radians);
+  triangle.drawTriangle(triangleCtx);
+  triangleCtx.rotate(-radians);
+  triangleCtx.translate(-triangleCanvas.width / 2, -triangleCanvas.height / 2);
   incrementAngle();
-
-  // incrementAngle();
-  // ctx.save();
-  // ctx.lineWidth = 1;
-  // ctx.translate(
-  //   triangle.getTriangleCentroid()[0],
-  //   triangle.getTriangleCentroid()[1]
-  // );
-  // ctx.rotate(toRadians(angle));
-  // triangle.drawTriangle(ctx);
-  // ctx.rotate(-toRadians(angle));
-  // ctx.translate(
-  //   -triangle.getTriangleCentroid()[0],
-  //   -triangle.getTriangleCentroid()[1]
-  // );
-  // ctx.restore();
-  // requestAnimationFrame(rotateTriangleAnimation);
 };
+var angle = 0;
 
 const incrementAngle = () => {
   angle++;
@@ -193,154 +171,106 @@ const toRadians = (degree) => {
   return degree * (Math.PI / 180);
 };
 
-c.onclick = () => {
+triangleCanvas.onclick = () => {
+  this.cancelled = true;
   console.log("Click");
-  animateCanvas(ctx);
+  animateCanvas();
 };
 
-var angle = 0;
-
-function drawPolygon(
-  centerX,
-  centerY,
-  sideCount,
-  size,
-  strokeWidth,
-  strokeColor,
-  fillColor,
-  rotationDegrees
-) {
-  var radians = (rotationDegrees * Math.PI) / 180;
-  ctx.translate(centerX, centerY);
-  ctx.rotate(radians);
-  ctx.beginPath();
-  ctx.moveTo(size * Math.cos(0), size * Math.sin(0));
-  for (var i = 1; i <= sideCount; i += 1) {
-    ctx.lineTo(
-      size * Math.cos((i * 2 * Math.PI) / sideCount),
-      size * Math.sin((i * 2 * Math.PI) / sideCount)
-    );
-  }
-  ctx.closePath();
-  ctx.fillStyle = fillColor;
-  ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = strokeWidth;
-  ctx.stroke();
-  ctx.fill();
-  ctx.rotate(-radians);
-  ctx.translate(-centerX, -centerY);
-}
-
-function animate(time) {
-  if (time < nextTime) {
-    requestAnimationFrame(animate);
-    return;
-  }
-  nextTime = time + delay;
-  ctx.clearRect(0, 0, cw, ch);
-  drawPolygon(
-    centerX,
-    centerY,
-    sideCount,
-    size,
-    strokeWidth,
-    strokeColor,
-    fillColor,
-    rotationDegrees
-  );
-  rotationDegrees += rotationIncrement;
-  requestAnimationFrame(animate);
-}
+let frame;
+let bigCircle;
+let triangle;
+let square;
+let smallCircle;
+let cancelled = false;
 
 // Draw Canvas
-const drawStartingCanvas = (ctx) => {
-  var c = document.getElementById("canvas");
+const drawStartingCanvas = () => {
+  if (this.cancelled) {
+    console.log("cancelled");
+    return;
+  }
+  var c = document.getElementById("main-canvas");
   var ctx = c.getContext("2d");
+  let triangleCanvas = document.getElementById("triangle-canvas");
+  let triangleCtx = triangleCanvas.getContext("2d");
   ctx.lineWidth = 1;
   var frame = new Box(
-    canvas.width / 2 - 400 / 2,
-    canvas.height / 2 - 225 / 2,
+    c.width / 2 - 400 / 2,
+    c.height / 2 - 225 / 2,
     400,
     225,
     "255, 255, 255",
-    1
+    1,
+    c
   );
+  this.frame = frame;
   frame.drawBox(ctx);
   ctx.moveTo(600, 250);
   var bigCircle = new Circle(500, 250, 100, "66, 194, 255", 0.77);
+  this.bigCircle = bigCircle;
   bigCircle.drawCircle(ctx);
-  ctx.moveTo(410, 290);
+  triangleCtx.moveTo(410, 290);
   var trianglePoints = [
-    [500, 155],
-    [590, 290],
-    [410, 290],
+    [-85, 50],
+    [0, -100],
+    [85, 50],
   ];
+
   var triangle = new Triangle(trianglePoints, "133, 244, 255", 1);
+  this.triangle = triangle;
   rotateTriangleAnimation(triangle);
+
   ctx.moveTo(462.5, 290);
-  var square = new Box(462.5, 210, 75, 80, "184, 255, 249", 1);
+  var square = new Box(462.5, 210, 75, 80, "184, 255, 249", 1, c);
+  this.square = square;
   square.drawBox(ctx);
   ctx.moveTo(300, 135);
   var smallCircle = new Circle(500, 250, 22.5, "239, 255, 253", 1);
+  this.smallCircle = smallCircle;
   smallCircle.drawCircle(ctx);
   requestAnimationFrame(drawStartingCanvas);
 };
 
 function animateCanvas() {
-  var c = document.getElementById("canvas");
+  var c = document.getElementById("main-canvas");
   var ctx = c.getContext("2d");
   // Small Circle
-  console.log(smallCircle);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (smallCircle.getRadius <= 425) {
-    smallCircle.incrementRadius();
+  ctx.clearRect(0, 0, c.width, c.height);
+  if (this.smallCircle.getRadius <= 425) {
+    this.smallCircle.incrementRadius();
   }
-  if (smallCircle.getOpacity >= 0) {
-    smallCircle.decreaseOpacity();
+  if (this.smallCircle.getOpacity >= 0) {
+    this.smallCircle.decreaseOpacity();
   }
 
   // Big Circle
-  if (bigCircle.getRadius <= 475) {
-    bigCircle.incrementRadius();
+  if (this.bigCircle.getRadius <= 475) {
+    this.bigCircle.incrementRadius();
   }
-  if (bigCircle.getOpacity >= 0) {
-    bigCircle.decreaseOpacity();
+  if (this.bigCircle.getOpacity >= 0) {
+    this.bigCircle.decreaseOpacity();
   }
-  // Triangle
+  this.triangle.decreaseOpacity();
+
+  rotateTriangleAnimation(this.triangle);
 
   // Square
-  if (square.getHeight >= 13) {
-    square.decreaseHeight();
+  if (this.square.getHeight >= 13) {
+    this.square.decreaseHeight();
   }
-  if (square.getWidth >= 13) {
-    square.decreaseWidth();
+  if (this.square.getWidth >= 13) {
+    this.square.decreaseWidth();
   }
-  if (square.getOpacity >= 0) {
-    square.decreaseOpacity();
+  if (this.square.getOpacity >= 0) {
+    this.square.decreaseOpacity();
   }
 
-  smallCircle.drawCircle(ctx);
-  bigCircle.drawCircle(ctx);
-  console.log(square.getOpacity);
-  square.drawBox(ctx);
+  this.smallCircle.drawCircle(ctx);
+  this.bigCircle.drawCircle(ctx);
+  this.square.drawBox(ctx);
   requestAnimationFrame(animateCanvas);
 }
 
 drawStartingCanvas();
-
-var cw = canvas.width;
-var ch = canvas.height;
-
-var sideCount = 3;
-var size = 40;
-var centerX = 50;
-var centerY = 50;
-var strokeWidth = 4;
-var strokeColor = "purple";
-var fillColor = "skyblue";
-var rotationDegrees = 0;
-var rotationIncrement = 1;
-var nextTime = 0;
-var delay = (1000 / 60) * 1;
-
-// requestAnimationFrame(animate);
+// animateCanvas();
