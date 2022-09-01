@@ -7,10 +7,7 @@ $(function () {
     if (toggled) {
       $("#outer_circle").animate({ r: 500, "fill-opacity": 0 });
       $("#inner_circle").animate({ r: 450, "fill-opacity": 0 });
-      $("#triangle").animate({
-        "fill-opacity": 0,
-        points: "0, 100 100, 0, 0, 250",
-      });
+      $("#triangle").animate({ "fill-opacity": 0 });
       $("#rectangle").animate({
         "fill-opacity": 0,
         height: 10,

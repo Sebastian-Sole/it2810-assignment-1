@@ -54,8 +54,22 @@ svg{
     width: 100%;
 }
 
-
-@keyframes move {
-    
+#triangle {
+    transform: rotate(0deg);
+    fill-opacity: 1;
+    animation-name: changeTriangle;
+    animation-duration: 3s;
+    transform-origin: center center;
+    animation-iteration-count: infinite;
 }
+
+@keyframes changeTriangle {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 
