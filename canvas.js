@@ -23,6 +23,10 @@ class Circle {
     this.radius += 10;
   }
 
+  decrementRadius() {
+    this.radius -= 10;
+  }
+
   extractColor() {
     return "rgba(" + this.fillColor + ", " + this.opacity + ")";
   }
@@ -33,6 +37,18 @@ class Circle {
     } else {
       this.opacity -= 0.025;
     }
+  }
+
+  increaseOpacity() {
+    if (this.opacity + 0.025 > 1) {
+      this.opacity = 1;
+    } else {
+      this.opacity += 0.025;
+    }
+  }
+
+  set setRadius(value) {
+    this.radius = value;
   }
 
   drawCircle(ctx) {
@@ -95,6 +111,32 @@ class Box {
     }
   }
 
+  increaseOpacity() {
+    if (this.opacity + 0.025 > 1) {
+      this.opacity = 1;
+    } else {
+      this.opacity += 0.025;
+    }
+  }
+
+  increaseWidth() {
+    this.width += 1.5;
+    this.x = this.canvas.width / 2 - this.width / 2;
+  }
+
+  increaseHeight() {
+    this.height += 1.5;
+    this.y = this.canvas.height / 2 - this.height / 2;
+  }
+
+  set setHeight(height) {
+    this.height = height;
+  }
+
+  set setWidth(width) {
+    this.width = width;
+  }
+
   drawBox(ctx) {
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);
@@ -145,6 +187,18 @@ class Triangle {
       this.opacity -= 0.025;
     }
   }
+
+  increaseOpacity() {
+    if (this.opacity + 0.025 > 1) {
+      this.opacity = 1;
+    } else {
+      this.opacity += 0.025;
+    }
+  }
+
+  get getOpacity() {
+    return this.opacity;
+  }
 }
 
 // Draw on the Canvas
@@ -172,9 +226,19 @@ const toRadians = (degree) => {
 };
 
 triangleCanvas.onclick = () => {
-  this.cancelled = true;
+  this.startCanvasCancelled = true;
   console.log("Click");
-  animateCanvas();
+  if (!this.animationDone) {
+    secondAnimationCancelled = true;
+    firstAnimationCancelled = false;
+    animateCanvas();
+  } else {
+    firstAnimationCancelled = true;
+    secondAnimationCancelled = false;
+    this.animationDone = false;
+    console.log("Another click");
+    animateBackToStart();
+  }
 };
 
 let frame;
@@ -182,11 +246,14 @@ let bigCircle;
 let triangle;
 let square;
 let smallCircle;
-let cancelled = false;
+let startCanvasCancelled = false;
+let firstAnimationCancelled = false;
+let secondAnimationCancelled = false;
+let animationDone = false;
 
 // Draw Canvas
 const drawStartingCanvas = () => {
-  if (this.cancelled) {
+  if (this.startCanvasCancelled) {
     console.log("cancelled");
     return;
   }
@@ -233,14 +300,24 @@ const drawStartingCanvas = () => {
 };
 
 function animateCanvas() {
+  if (firstAnimationCancelled) {
+    console.log("First animation cancelled");
+    return;
+  }
   var c = document.getElementById("main-canvas");
   var ctx = c.getContext("2d");
   // Small Circle
   ctx.clearRect(0, 0, c.width, c.height);
-  if (this.smallCircle.getRadius <= 425) {
+  let smallCircleDone = false;
+  let bigCircleDone = false;
+  let triangleDone = false;
+  let squareDone = false;
+  let frameDone = false;
+
+  if (this.smallCircle.getRadius < 425) {
     this.smallCircle.incrementRadius();
   }
-  if (this.smallCircle.getOpacity >= 0) {
+  if (this.smallCircle.getOpacity > 0) {
     this.smallCircle.decreaseOpacity();
   }
 
@@ -248,11 +325,11 @@ function animateCanvas() {
   if (this.bigCircle.getRadius <= 475) {
     this.bigCircle.incrementRadius();
   }
-  if (this.bigCircle.getOpacity >= 0) {
+  if (this.bigCircle.getOpacity > 0) {
     this.bigCircle.decreaseOpacity();
   }
-  this.triangle.decreaseOpacity();
 
+  this.triangle.decreaseOpacity();
   rotateTriangleAnimation(this.triangle);
 
   // Square
@@ -269,7 +346,123 @@ function animateCanvas() {
   this.smallCircle.drawCircle(ctx);
   this.bigCircle.drawCircle(ctx);
   this.square.drawBox(ctx);
+
+  if (this.smallCircle.getRadius >= 425 && this.smallCircle.getOpacity == 0) {
+    smallCircleDone = true;
+  }
+
+  if (this.bigCircle.getRadius >= 475 && this.bigCircle.getOpacity == 0) {
+    bigCircleDone = true;
+  }
+
+  if (this.triangle.getOpacity == 0) {
+    triangleDone = true;
+  }
+
+  if (
+    this.square.getWidth <= 13 &&
+    this.square.getHeight <= 13 &&
+    this.square.getOpacity == 0
+  ) {
+    squareDone = true;
+  }
+
+  // Add for frame;
+  if (smallCircleDone && bigCircleDone && triangleDone && squareDone) {
+    this.animationDone = true;
+  }
+  console.log("ASKLHD");
   requestAnimationFrame(animateCanvas);
+}
+
+function animateBackToStart() {
+  console.log("Ran");
+  if (secondAnimationCancelled) {
+    console.log("Second animation cancelled");
+    return;
+  }
+  var c = document.getElementById("main-canvas");
+  var ctx = c.getContext("2d");
+  // Small Circle
+  ctx.clearRect(0, 0, c.width, c.height);
+  let smallCircleDone = false;
+  let bigCircleDone = false;
+  let triangleDone = false;
+  let squareDone = false;
+  let frameDone = false;
+
+  if (this.smallCircle.getRadius > 22.5) {
+    this.smallCircle.decrementRadius();
+    if (this.smallCircle.getRadius < 22.5) {
+      this.smallCircle.setRadius(22.5);
+    }
+  }
+  if (this.smallCircle.getOpacity < 1) {
+    this.smallCircle.increaseOpacity();
+  }
+
+  // Big Circle
+  if (this.bigCircle.getRadius > 110) {
+    this.bigCircle.decrementRadius();
+    if (this.bigCircle.getRadius < 110) {
+      this.bigCircle.setRadius(110);
+    }
+  }
+  if (this.bigCircle.getOpacity < 0.77) {
+    this.bigCircle.increaseOpacity();
+  }
+  this.triangle.increaseOpacity();
+
+  // Square
+  if (this.square.getHeight < 80) {
+    this.square.increaseHeight();
+    if (this.square.getHeight > 80) {
+      this.square.setHeight(80);
+    }
+  }
+  if (this.square.getWidth < 75) {
+    this.square.increaseWidth();
+    if (this.square.getWidth > 75) {
+      this.square.setWidth(75);
+    }
+  }
+  if (this.square.getOpacity < 1) {
+    this.square.increaseOpacity();
+  }
+
+  this.bigCircle.drawCircle(ctx);
+  rotateTriangleAnimation(this.triangle);
+
+  this.square.drawBox(ctx);
+
+  this.smallCircle.drawCircle(ctx);
+
+  if (this.smallCircle.getRadius == 22.5 && this.smallCircle.getOpacity == 1) {
+    smallCircleDone = true;
+  }
+
+  if (this.bigCircle.getRadius == 110 && this.bigCircle.getOpacity == 1) {
+    bigCircleDone = true;
+  }
+
+  if (this.triangle.getOpacity == 1) {
+    triangleDone = true;
+  }
+
+  if (
+    this.square.getWidth <= 75 &&
+    this.square.getHeight <= 80 &&
+    this.square.getOpacity == 1
+  ) {
+    squareDone = true;
+  }
+
+  // Add for frame;
+  if (smallCircleDone && bigCircleDone && triangleDone && squareDone) {
+    this.animationDone = true;
+  }
+
+  requestAnimationFrame(animateBackToStart);
 }
 
 drawStartingCanvas();
