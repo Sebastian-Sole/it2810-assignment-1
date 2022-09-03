@@ -79,6 +79,7 @@ class Box {
     this.fillColor = fillColor;
     this.opacity = opacity;
     this.canvas = canvas;
+    this.lineWidth = 1;
   }
 
   get getHeight() {
@@ -137,13 +138,39 @@ class Box {
     this.width = width;
   }
 
+  increaseLineWidth() {
+    if (this.lineWidth + 0.25 > 10) {
+      this.lineWidth = 10;
+    } else {
+      this.lineWidth += 0.25;
+    }
+  }
+
+  decreaseLineWidth() {
+    if (this.lineWidth - 0.25 < 1) {
+      this.lineWidth = 1;
+    } else {
+      this.lineWidth -= 0.25;
+    }
+  }
+
+  setLineWidth(value) {
+    this.lineWidth = value;
+  }
+
+  get getLineWidth() {
+    return this.lineWidth;
+  }
+
   drawBox(ctx) {
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);
     ctx.fillStyle = this.extractColor();
     ctx.fill();
     ctx.closePath();
+    ctx.lineWidth = this.lineWidth;
     ctx.stroke();
+    ctx.lineWidth = 1;
   }
 
   extractColor() {
@@ -314,6 +341,15 @@ function animateCanvas() {
   let squareDone = false;
   let frameDone = false;
 
+  if (this.frame.getLineWidth < 10) {
+    this.frame.increaseLineWidth();
+    if (this.frame.getLineWidth > 10) {
+      this.frame.setLineWidth(10);
+    }
+  }
+
+  this.frame.drawBox(ctx);
+
   if (this.smallCircle.getRadius < 425) {
     this.smallCircle.incrementRadius();
   }
@@ -371,12 +407,10 @@ function animateCanvas() {
   if (smallCircleDone && bigCircleDone && triangleDone && squareDone) {
     this.animationDone = true;
   }
-  console.log("ASKLHD");
   requestAnimationFrame(animateCanvas);
 }
 
 function animateBackToStart() {
-  console.log("Ran");
   if (secondAnimationCancelled) {
     console.log("Second animation cancelled");
     return;
@@ -430,6 +464,14 @@ function animateBackToStart() {
     this.square.increaseOpacity();
   }
 
+  if (this.frame.getLineWidth > 1) {
+    this.frame.decreaseLineWidth();
+    if (this.frame.getLineWidth < 1) {
+      this.frame.setLineWidth(1);
+    }
+  }
+
+  this.frame.drawBox(ctx);
   this.bigCircle.drawCircle(ctx);
   rotateTriangleAnimation(this.triangle);
 
@@ -466,4 +508,3 @@ function animateBackToStart() {
 }
 
 drawStartingCanvas();
-// animateCanvas();
