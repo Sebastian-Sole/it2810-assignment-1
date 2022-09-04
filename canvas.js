@@ -350,17 +350,24 @@ function animateCanvas() {
 
   this.frame.drawBox(ctx);
 
-  if (this.smallCircle.getRadius < 425) {
+  if (this.smallCircle.getRadius < 450) {
     this.smallCircle.incrementRadius();
+    if (this.smallCircle.getRadius > 450) {
+      this.smallCircle.setRadius = 450;
+    }
   }
   if (this.smallCircle.getOpacity > 0) {
     this.smallCircle.decreaseOpacity();
   }
 
   // Big Circle
-  if (this.bigCircle.getRadius <= 475) {
+  if (this.bigCircle.getRadius <= 500) {
     this.bigCircle.incrementRadius();
+    if (this.bigCircle.getRadius > 500) {
+      this.bigCircle.setRadius = 500;
+    }
   }
+
   if (this.bigCircle.getOpacity > 0) {
     this.bigCircle.decreaseOpacity();
   }
@@ -428,7 +435,7 @@ function animateBackToStart() {
   if (this.smallCircle.getRadius > 22.5) {
     this.smallCircle.decrementRadius();
     if (this.smallCircle.getRadius < 22.5) {
-      this.smallCircle.setRadius(22.5);
+      this.smallCircle.setRadius = 22.5;
     }
   }
   if (this.smallCircle.getOpacity < 1) {
@@ -436,10 +443,10 @@ function animateBackToStart() {
   }
 
   // Big Circle
-  if (this.bigCircle.getRadius > 110) {
+  if (this.bigCircle.getRadius > 100) {
     this.bigCircle.decrementRadius();
-    if (this.bigCircle.getRadius < 110) {
-      this.bigCircle.setRadius(110);
+    if (this.bigCircle.getRadius < 100) {
+      this.bigCircle.setRadius(100);
     }
   }
   if (this.bigCircle.getOpacity < 0.77) {

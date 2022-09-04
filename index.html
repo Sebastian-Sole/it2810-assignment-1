@@ -14,9 +14,15 @@
       <h1>Art Gallery</h1>
     </div>
 
+    <div class="artist-info">
+      <h2>Information about the artwork</h2>
+      <p><em>A Mural of Life</em>, by painter Has Bulla, is an abstract depiction of life's greatest question: "What is the meaning of life?". The interactivity aspect of the digital artwork represents putting life into persepctive, and how life is bigger than just one person.</p>
+    </div>
+
     <div class="main-content">
+      <h2>SVG</h2>
       <div class="box">
-        <svg viewBox="0 0 1000 500" id="svg-content">
+        <svg viewBox="0 0 500 500" id="svg-content">
           <circle
             cx="50%"
             cy="50%"
@@ -28,7 +34,7 @@
             id="outer_circle"
           />
           <polygon
-            points="400, 291  500 153, 600 291"
+            points="150, 291  250 145, 350 291"
             fill-opacity="1"
             stroke="black"
             stroke-width="1"
@@ -38,7 +44,7 @@
           <rect
             width="80"
             height="80"
-            x="460"
+            x="210"
             y="210"
             stroke="black"
             stroke-width="1"
@@ -46,15 +52,15 @@
             id="rectangle"
           />
 
-          <line x1="300" y1="375" x2="700" y2="375" stroke="black" />
-          <line x1="300" y1="375" x2="300" y2="125" stroke="black" />
-          <line x1="700" y1="375" x2="700" y2="125" stroke="black" />
-          <line x1="700" y1="125" x2="300" y2="125" stroke="black" />
+          <line x1="50" y1="375" x2="450" y2="375" stroke="black" />
+          <line x1="50" y1="375" x2="50" y2="125" stroke="black" />
+          <line x1="450" y1="375" x2="450" y2="125" stroke="black" />
+          <line x1="450" y1="125" x2="50" y2="125" stroke="black" />
 
           <circle
             cx="50%"
             cy="50%"
-            r="25"
+            r="22.5"
             stroke="black"
             stroke-width="1"
             fill="#EFFFFD"
@@ -63,9 +69,12 @@
           />
         </svg>
       </div>
+      <p style="font-style: italic; margin-top: -30px">Hint: Click Me!</p>
+
+      <h2>Canvas</h2>
 
       <div class="box">
-        <canvas id="main-canvas" class="stack" width="1000px" height="500px">
+        <canvas id="main-canvas" class="stack" width="1000" height="500px">
         </canvas>
         <canvas
           id="triangle-canvas"
@@ -73,8 +82,9 @@
           width="1000px"
           height="500px"
         ></canvas>
-      </div>
     </div>
+    <p style="font-style: italic; margin-top: -30px">Hint: Click Me!</p>
+
     <script src="canvas.js"></script>
   </body>
 </html>
