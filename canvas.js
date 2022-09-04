@@ -1,9 +1,6 @@
 var mainCanvas = document.getElementById("main-canvas");
 var ctx = mainCanvas.getContext("2d");
 
-let triangleCanvas = document.getElementById("triangle-canvas");
-let triangleCtx = mainCanvas.getContext("2d");
-
 class Circle {
   constructor(x, y, radius, fillColor, opacity) {
     this.x = x;
@@ -232,11 +229,11 @@ class Triangle {
 
 const rotateTriangleAnimation = (triangle) => {
   var radians = (angle * Math.PI) / 180;
-  triangleCtx.translate(triangleCanvas.width / 2, triangleCanvas.height / 2);
-  triangleCtx.rotate(radians);
-  triangle.drawTriangle(triangleCtx);
-  triangleCtx.rotate(-radians);
-  triangleCtx.translate(-triangleCanvas.width / 2, -triangleCanvas.height / 2);
+  ctx.translate(mainCanvas.width / 2, mainCanvas.height / 2);
+  ctx.rotate(radians);
+  triangle.drawTriangle(ctx);
+  ctx.rotate(-radians);
+  ctx.translate(-mainCanvas.width / 2, -mainCanvas.height / 2);
   incrementAngle();
 };
 var angle = 0;
@@ -252,7 +249,7 @@ const toRadians = (degree) => {
   return degree * (Math.PI / 180);
 };
 
-triangleCanvas.onclick = () => {
+mainCanvas.onclick = () => {
   this.startCanvasCancelled = true;
   console.log("Click");
   if (!this.animationDone) {
@@ -286,8 +283,6 @@ const drawStartingCanvas = () => {
   }
   var c = document.getElementById("main-canvas");
   var ctx = c.getContext("2d");
-  let triangleCanvas = document.getElementById("triangle-canvas");
-  let triangleCtx = triangleCanvas.getContext("2d");
   ctx.lineWidth = 1;
   var frame = new Box(
     c.width / 2 - 400 / 2,
@@ -304,7 +299,7 @@ const drawStartingCanvas = () => {
   var bigCircle = new Circle(500, 250, 100, "66, 194, 255", 0.77);
   this.bigCircle = bigCircle;
   bigCircle.drawCircle(ctx);
-  triangleCtx.moveTo(410, 290);
+  ctx.moveTo(410, 290);
   var trianglePoints = [
     [-85, 50],
     [0, -100],
