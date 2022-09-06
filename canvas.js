@@ -151,7 +151,7 @@ class Box {
     }
   }
 
-  setLineWidth(value) {
+  set setLineWidth(value) {
     this.lineWidth = value;
   }
 
@@ -311,7 +311,7 @@ const drawStartingCanvas = () => {
   rotateTriangleAnimation(triangle);
 
   ctx.moveTo(462.5, 290);
-  var square = new Box(462.5, 210, 75, 80, "184, 255, 249", 1, c);
+  var square = new Box(460, 210, 80, 80, "184, 255, 249", 1, c);
   this.square = square;
   square.drawBox(ctx);
   ctx.moveTo(300, 135);
@@ -339,7 +339,7 @@ function animateCanvas() {
   if (this.frame.getLineWidth < 10) {
     this.frame.increaseLineWidth();
     if (this.frame.getLineWidth > 10) {
-      this.frame.setLineWidth(10);
+      this.frame.setLineWidth = 10;
     }
   }
 
@@ -438,12 +438,11 @@ function animateBackToStart() {
   }
 
   // Big Circle
-  if (this.bigCircle.getRadius > 100) {
-    this.bigCircle.decrementRadius();
-    if (this.bigCircle.getRadius < 100) {
-      this.bigCircle.setRadius(100);
-    }
+  this.bigCircle.decrementRadius();
+  if (this.bigCircle.getRadius < 100) {
+    this.bigCircle.setRadius = 100;
   }
+
   if (this.bigCircle.getOpacity < 0.77) {
     this.bigCircle.increaseOpacity();
   }
@@ -453,13 +452,13 @@ function animateBackToStart() {
   if (this.square.getHeight < 80) {
     this.square.increaseHeight();
     if (this.square.getHeight > 80) {
-      this.square.setHeight(80);
+      this.square.setHeight = 80;
     }
   }
-  if (this.square.getWidth < 75) {
+  if (this.square.getWidth < 80) {
     this.square.increaseWidth();
-    if (this.square.getWidth > 75) {
-      this.square.setWidth(75);
+    if (this.square.getWidth > 80) {
+      this.square.setWidth = 80;
     }
   }
   if (this.square.getOpacity < 1) {
@@ -469,7 +468,7 @@ function animateBackToStart() {
   if (this.frame.getLineWidth > 1) {
     this.frame.decreaseLineWidth();
     if (this.frame.getLineWidth < 1) {
-      this.frame.setLineWidth(1);
+      this.frame.setLineWidth = 1;
     }
   }
 
@@ -485,7 +484,8 @@ function animateBackToStart() {
     smallCircleDone = true;
   }
 
-  if (this.bigCircle.getRadius == 110 && this.bigCircle.getOpacity == 1) {
+  if (this.bigCircle.getRadius == 100 && this.bigCircle.getOpacity == 1) {
+    console.log(this.bigCircle.getRadius);
     bigCircleDone = true;
   }
 
@@ -494,7 +494,7 @@ function animateBackToStart() {
   }
 
   if (
-    this.square.getWidth <= 75 &&
+    this.square.getWidth <= 80 &&
     this.square.getHeight <= 80 &&
     this.square.getOpacity == 1
   ) {

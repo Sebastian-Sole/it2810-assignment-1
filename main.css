@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+  }
+
 body {
     margin: 0; 
     font-family: "Helvetica Neue"
@@ -37,6 +41,10 @@ body {
     flex-direction: column;
 }
 
+#documentation > div {
+    width: 1000px;
+}
+
 
 #svg-content {
     display: flex;
@@ -45,35 +53,34 @@ body {
 }
 
 
-#rect{
-    width: 200px;
+#button {
+    background-color: #85F4FF; 
+    border: none;
+    border-radius: 6px;
+    color: black;
+    padding: 16px 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
 }
 
-#right-triangle {
-    width: 150px
+
+#button:hover {
+    background-color: #2cedff; 
+}
+#button:active {
+    background-color: #29b9c6; 
 }
 
-#equ-triangle {
-    width: 150px
-}
+    
 
-#square{
-    width:150px
-}
-
-svg{
-    width: 100%;
-}
-
-.stack {
-    position: absolute;
-}
 
 #triangle {
     transform: rotate(0deg);
     -webkit-tranform: rotate(0deg);
     -moz-transform: rotate(0deg);
     fill-opacity: 1;
+    animation: linear;
     animation-name: changeTriangle;
     animation-duration: 3s;
     transform-origin: center center;
@@ -104,6 +111,10 @@ svg{
     canvas {
         width: 400px;
     }
+    #documentation > div{
+        width: 400px;
+    }
+    
 }
 
 @media only screen and (max-width: 500px){
@@ -117,6 +128,10 @@ svg{
     .artist-info {
         width: 300px;
     }
+    #documentation > div{
+        width: 300px;
+    }
+    
 }
 
 

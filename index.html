@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Art project</title>
+    <title>Art Gallery</title>
     <link rel="stylesheet" href="main.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="svg.js"></script>
+    <script src="main.js"></script>
   </head>
   <body>
     <div class="header-content">
-      <h1>Art Gallery</h1>
+      <h1>A Mural Of Life</h1>
     </div>
 
     <div class="artist-info">
@@ -23,10 +24,19 @@
       <h2>SVG</h2>
       <div class="box">
         <svg viewBox="0 0 500 500" id="svg-content">
+          <rect
+          width ="400"
+          height="250"
+          x="50"
+          y="125"
+          stroke="black"
+          fill="white"
+          id="frame"
+          />
           <circle
             cx="50%"
             cy="50%"
-            r="110"
+            r="100"
             stroke="black"
             stroke-width="1"
             fill="#42C2FF"
@@ -34,7 +44,7 @@
             id="outer_circle"
           />
           <polygon
-            points="150, 291  250 145, 350 291"
+            points="165, 300  250 150, 335 300"
             fill-opacity="1"
             stroke="black"
             stroke-width="1"
@@ -52,10 +62,10 @@
             id="rectangle"
           />
 
-          <line x1="50" y1="375" x2="450" y2="375" stroke="black" />
+          <!-- <line x1="50" y1="375" x2="450" y2="375" stroke="black" />
           <line x1="50" y1="375" x2="50" y2="125" stroke="black" />
           <line x1="450" y1="375" x2="450" y2="125" stroke="black" />
-          <line x1="450" y1="125" x2="50" y2="125" stroke="black" />
+          <line x1="450" y1="125" x2="50" y2="125" stroke="black" /> -->
 
           <circle
             cx="50%"
@@ -69,15 +79,66 @@
           />
         </svg>
       </div>
-      <p style="font-style: italic; margin-top: -30px">Hint: Click Me!</p>
+      <p style="font-style: italic; margin-top: -30px">Hint: Click the artwork!</p>
 
       <h2>Canvas</h2>
 
       <div class="box">
         <canvas id="main-canvas" class="stack" width="1000" height="500px"/> 
     </div>
-    <p style="font-style: italic; margin-top: -30px">Hint: Click Me!</p>
+    <p style="font-style: italic; margin-top: -30px" id="button-ref">Hint: Click the artwork!</p>
 
+    <a id="button" href="#button-ref">Show Documentation</a>
+
+
+    <div id="documentation" class="hide">
+      <h2 id="documentation-header">Documentation</h2>
+      <div class="answers">
+      <h3>Use of Flexbox</h3>
+      <p>I chose to use CSS-Flexbox since I have more experience with Flexbox vs CSS grid. I also believe that Flexbox is easier to deal with/better to use when there are few elements that need to be controlled. Another reason why I chose flexbox was because I wanted very basic styling, having everything centered on the page. This is easily achieveable with "justify-content: center" and "align-items: center" which center the child elements in the center both on the x and y axis. I use "flex-direction: column" to keep the column format that I wanted, which also made styling for responsive web design easier. </p>
+      </div>
+      <div class="answers">
+        <h3>Use of HTML Canvas and SVG in HTML</h3>
+        <p>I used SVG to create the shapes in the art, and jQuery to animate them on a click. I tried to use as many SVG elements as possible, i.e. circle, polygon and rect. I wanted to experiment with as many types of SVG elements, and I found polygon to be the trickiest. Most of the styling is done in the attributes of the SVG elements, but some of these change during the animation, especially the fill-opacity. All of the values which define the shapes size and location are hardcoded, something I realize is not good practice, but it made it easier for me to learn how SVG elements work, since I could mess around with specific values.
+          Canvas, however, is all drawn with javascript. It took me a while to figure out that the width attribute in the canvas tag referred to the width of the canvas, and not the element. This produced some styling challenges, which I was able to fix after figuring out the problem. I decided to use object-oriented programming for the canvas elements, creating classes for circle, box and triangle. I did this to be able to store and access properties such as radius, fill-opacity, height and width for the squares, etc. This allowed me to easily change those values when animating. I realize now, however, that this produced a lot of duplicate, redundant, boilerplate code, and if I did this exercise again, I would plan out my workflow better.
+          A lot of time was spent drawing one shape, animating it, trying to do the same for the next shape, and then having to change a lot of the code for the previous shape. Hardcoded values were used for the location and sizes of the shapes, which meant that I had to change a lot of the values after refactoring code, and working on resizing. Some elements, like the ones used for triangle rotation, are dynamically programmed. Canvas proved to be the most difficult to animate, since it works as a drawing canvas. If you want to move an element, you must erase what is there, and redraw it slightly diffrerent. It was also very frustrating that canvas only has a built in function to erase quadratic shapes, and not circular or triangular shapes. 
+          Having a rotating triangle without erasing the whole canvas was difficult, but proved to be achieveable with the help of requestFrameAnimation.
+        </p>
+      </div>
+      <div class="answers">
+        <h3>Use of jQuery</h3>
+        <p>I used jQuery to access the HTML elements for both Canvas and SVG animation. I also used jQuery to animate the the SVG drawing when a user clicks on it, by using the ".animate()" function. jQuery reduced boilerplate code for accessing html elements, and although vanilla javascript was used for canvas animation, it's syntax was very easy to work with when animating svg elements. jQuery's library also makes it easier to handle events such as a click event by reducing boilerplate code, something which proved to be true when handling click events on the artwork. The jQuery library is used with the jQuery API. This was easier to work with, but it does mean that the animation does not work without internet connection. I don't see this as a problem, however.</p>
+      </div>
+      <div class="answers">
+        <h3>Cross-Browser Testing</h3>
+        <p>Cross-Browser testing was completed with Chrome and Safari (the two browsers that are installed on the computer). The testing was done by opening up the HTML file in both browsers, clicking the artwork to see if they would animate correctly, and by seeing that the responsive web design worked properly. 
+          In one instance, the rotation of the triangle was "choppy" in Safari, but smooth on Chrome. This was solved by adding a separate "transfom" style specifically for Safari, which was "-webkit-transform". Mobile testing was also done by using developer tools, and using the "Toggle device toolbar" functionality to resize the viewport to fit a smart phone device with a 480px screen.
+        </p>
+      </div>
+      <div class="answers">
+        <h3>Sources</h3>
+        <ul>
+          <li>w3schools: <a href="https://www.w3schools.com/html/html_responsive.asp"> HTML Responsive Web Design<a></li>
+          <li>w3schools: <a href="https://www.w3schools.com/html/html5_canvas.asp">HTML Canvas Graphics</a></li>
+          <li>w3schools: <a href="https://www.w3schools.com/css/css3_animations.asp">CSS Animations</a></li>
+          <li>Mozilla Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/polygon">SVG Polygon</a></li>
+          <li>w3schools: <a href="https://www.w3schools.com/html/html5_svg.asp">HTML SVG Graphics</a></li>
+
+          <li>jQuery Docs: <a href="https://api.jquery.com/animate/">jQuery Animate</a></li>
+          <li>Mozilla Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">requestFrameAnimation</a></li>
+
+
+          <li>Github: <a href="https://gist.github.com/JordanDelcros/cea7b8b231660ebccc6f">Triangle Centroid</a></li>
+          <li>stackoverflow: <a href="https://stackoverflow.com/questions/38238282/how-to-rotate-a-triangle-without-rotating-the-entire-canvas">Triangle Rotaion Canvas</a></li>
+
+          <li>w3schools: <a href="https://www.w3schools.com/tags/canvas_rotate.asp">Canvas Rotation</a></li>
+          <li>medium.com: <a href="https://medium.com/dailyjs/how-to-get-started-with-canvas-animations-in-javascript-cb2ccf37515c">How to Get Started with Canvas Animations in Javascript</a></li>
+
+          <li>Mozilla Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get">Getters in Javascript</a></li>
+
+        </ul>
+      </div>
+    </div>
     <script src="canvas.js"></script>
   </body>
 </html>

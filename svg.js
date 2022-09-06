@@ -12,12 +12,12 @@ $(function () {
         "fill-opacity": 0,
         height: 10,
         width: 10,
-        x: 240,
+        x: 245,
         y: 245,
       });
-      $("line").animate({ "stroke-width": 10 });
+      $("#frame").animate({ "stroke-width": 10 });
     } else {
-      $("#outer_circle").animate({ r: 110, "fill-opacity": 0.7 });
+      $("#outer_circle").animate({ r: 100, "fill-opacity": 0.7 });
       $("#inner_circle").animate({ r: 22.5, "fill-opacity": 1 });
       $("#triangle").animate({ "fill-opacity": 1 });
       $("#rectangle").animate({
@@ -27,7 +27,7 @@ $(function () {
         x: 210,
         y: 210,
       });
-      $("line").animate({ "stroke-width": 1 });
+      $("#frame").animate({ "stroke-width": 1 });
     }
   });
 });
