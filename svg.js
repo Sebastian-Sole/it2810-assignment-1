@@ -1,6 +1,5 @@
 $(function () {
   var toggled = false;
-  // jQuery
   $("svg").click(function () {
     toggled = !toggled;
 

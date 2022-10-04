@@ -1,4 +1,5 @@
 $(function () {
+  $("#documentation").hide();
   let toggled = false;
   $("#button").click(() => {
     if (toggled) {

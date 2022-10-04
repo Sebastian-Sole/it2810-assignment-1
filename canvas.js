@@ -1,4 +1,4 @@
-var mainCanvas = document.getElementById("main-canvas");
+var mainCanvas = $("#main-canvas")[0];
 var ctx = mainCanvas.getContext("2d");
 
 class Circle {
@@ -225,8 +225,6 @@ class Triangle {
   }
 }
 
-// Draw on the Canvas
-
 const rotateTriangleAnimation = (triangle) => {
   var radians = (angle * Math.PI) / 180;
   ctx.translate(mainCanvas.width / 2, mainCanvas.height / 2);
@@ -251,7 +249,6 @@ const toRadians = (degree) => {
 
 mainCanvas.onclick = () => {
   this.startCanvasCancelled = true;
-  console.log("Click");
   if (!this.animationDone) {
     secondAnimationCancelled = true;
     firstAnimationCancelled = false;
@@ -260,7 +257,6 @@ mainCanvas.onclick = () => {
     firstAnimationCancelled = true;
     secondAnimationCancelled = false;
     this.animationDone = false;
-    console.log("Another click");
     animateBackToStart();
   }
 };
@@ -278,11 +274,10 @@ let animationDone = false;
 // Draw Canvas
 const drawStartingCanvas = () => {
   if (this.startCanvasCancelled) {
-    console.log("cancelled");
     return;
   }
-  var c = document.getElementById("main-canvas");
-  var ctx = c.getContext("2d");
+  var c = this.mainCanvas;
+  var ctx = this.ctx;
   ctx.lineWidth = 1;
   var frame = new Box(
     c.width / 2 - 400 / 2,
@@ -323,10 +318,9 @@ const drawStartingCanvas = () => {
 
 function animateCanvas() {
   if (firstAnimationCancelled) {
-    console.log("First animation cancelled");
     return;
   }
-  var c = document.getElementById("main-canvas");
+  var c = $("#main-canvas")[0];
   var ctx = c.getContext("2d");
   // Small Circle
   ctx.clearRect(0, 0, c.width, c.height);
@@ -414,10 +408,9 @@ function animateCanvas() {
 
 function animateBackToStart() {
   if (secondAnimationCancelled) {
-    console.log("Second animation cancelled");
     return;
   }
-  var c = document.getElementById("main-canvas");
+  var c = $("#main-canvas")[0];
   var ctx = c.getContext("2d");
   // Small Circle
   ctx.clearRect(0, 0, c.width, c.height);

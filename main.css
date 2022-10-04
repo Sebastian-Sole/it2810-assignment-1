@@ -18,7 +18,7 @@ body {
     display: flex;
     justify-content: center;
     align-items:center;
-    width: 500px;
+    width: 50%;
     flex-direction: column;
     margin: 0 auto;
 }
@@ -39,6 +39,12 @@ body {
     align-items: center;
     flex-wrap: wrap;
     flex-direction: column;
+}
+
+#documentation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #documentation > div {
@@ -112,7 +118,7 @@ body {
         width: 400px;
     }
     #documentation > div{
-        width: 400px;
+        width: 70%;
     }
     
 }
@@ -129,7 +135,7 @@ body {
         width: 300px;
     }
     #documentation > div{
-        width: 300px;
+        width: 70%;
     }
     
 }
